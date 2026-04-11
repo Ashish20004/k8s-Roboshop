@@ -73,7 +73,7 @@ metadata:
   name: catalogue
   namespace: roboshop
 spec:
-  selectors:
+  selector:
     project: roboshop
     tier: backend
     component: catalogue
