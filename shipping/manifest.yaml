@@ -37,7 +37,7 @@ spec:
     spec:
       containers:
         - name: shipping
-          image: devzonefun/shipping:2.0.0
+          image: devzonefun/shipping:2.1.0
           imagePullPolicy: Always
           resources:
             requests:
@@ -52,6 +52,14 @@ spec:
             failureThreshold: 2
             initialDelaySeconds: 15
             periodSeconds: 10
+            
+          startupProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          failureThreshold: 20
+          periodSeconds: 10
+        
           livenessProbe:
             httpGet:
               path: /health
