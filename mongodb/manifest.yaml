@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+Kind: Deployment
+metadata:
+  name: mongodb
+  namespace: roboshop
+  labels: #these labels are replicas labels
+    project: roboshop
+    tier: db
+    component: mongodb
+spec:
+  replicas: 1
+
+  selector:
+  #using these labels we will select the pods which are created by this replica
+    matchLabels:
+      project: roboshop
+      tier: db
+      component: mongodb
+# This is pod defination ,pod is subset of replica
+  template:
+    metadata:
+      labels:
+        project: roboshop
+        tier: db
+        component: mongodb
+
+    spec:
+      containers:
+      - name: mongodb
+        image: devzonefun/mongodb:2.0.0
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+  namespace: roboshop
+  labels:
+    project: roboshop
+    tier: db
+    component: mongodb
+spec:
+  selector:
+    project: roboshop
+    tier: db
+    component: mongodb
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
