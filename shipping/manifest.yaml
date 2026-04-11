@@ -50,7 +50,7 @@ spec:
             tcpSocket:
               port: 8080
             failureThreshold: 2
-            intialDelaySeconds: 15
+            initialDelaySeconds: 15
             periodSeconds: 10
           livenessProbe:
             httpGet:
