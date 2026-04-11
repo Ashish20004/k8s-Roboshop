@@ -52,11 +52,11 @@ spec:
             failureThreshold: 2
             initialDelaySeconds: 15
             periodSeconds: 10
-            
+
           startupProbe:
-          httpGet:
-            path: /health
-            port: 8080
+            httpGet:
+              path: /health
+              port: 8080
           failureThreshold: 20
           periodSeconds: 10
         
