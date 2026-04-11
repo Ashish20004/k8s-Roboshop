@@ -23,8 +23,9 @@ metadata:
     component: user
 spec:
   replicas: 1
+  
   selector:
-    matchlabels:
+    matchLabels:
       project: roboshop
       tier: backend
       component: user
