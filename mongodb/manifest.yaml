@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-Kind: Deployment
+kind: Deployment
 metadata:
   name: mongodb
   namespace: roboshop
@@ -32,7 +32,7 @@ spec:
 ---
 
 apiVersion: v1
-Kind: Service
+kind: Service
 metadata:
   name: mongodb
   namespace: roboshop
@@ -46,6 +46,6 @@ spec:
     tier: db
     component: mongodb
   ports:
-    - protocol: TCP
-      port: 27017
-      targetPort: 27017
+  - protocol: TCP
+    port: 27017
+    targetPort: 27017
