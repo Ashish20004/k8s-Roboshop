@@ -1,0 +1,37 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: roboshop-blackbox
+  namespace: monitoring
+  labels:
+    release: monitoring
+spec:
+  groups:
+    - name: roboshop-blackbox
+      rules:
+        - record: probe_http_status_code
+          expr: probe_http_status_code
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: roboshop-services
+  namespace: monitoring
+  labels:
+    release: monitoring
+spec:
+  jobName: roboshop-blackbox
+  interval: 30s
+  module: http_2xx
+  prober:
+    url: blackbox-exporter-prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - http://frontend.roboshop.svc.cluster.local:80
+        - http://catalogue.roboshop.svc.cluster.local:8080
+        - http://user.roboshop.svc.cluster.local:8080
+        - http://cart.roboshop.svc.cluster.local:8080
+        - http://shipping.roboshop.svc.cluster.local:8080
+        - http://payment.roboshop.svc.cluster.local:8080
