@@ -1,18 +1,4 @@
-apiVersion: monitoring.coreos.com/v1
-kind: PrometheusRule
-metadata:
-  name: roboshop-blackbox
-  namespace: monitoring
-  labels:
-    release: monitoring
-spec:
-  groups:
-    - name: roboshop-blackbox
-      rules:
-        - record: probe_http_status_code
-          expr: probe_http_status_code
-
----
+cat > monitor.yaml <<'EOF'
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
@@ -23,6 +9,7 @@ metadata:
 spec:
   jobName: roboshop-blackbox
   interval: 30s
+  scrapeTimeout: 10s
   module: http_2xx
   prober:
     url: blackbox-exporter-prometheus-blackbox-exporter.monitoring.svc.cluster.local:9115
@@ -35,3 +22,51 @@ spec:
         - http://cart.roboshop.svc.cluster.local:8080
         - http://shipping.roboshop.svc.cluster.local:8080
         - http://payment.roboshop.svc.cluster.local:8080
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: roboshop-blackbox
+  namespace: monitoring
+  labels:
+    release: monitoring
+spec:
+  groups:
+    - name: roboshop-blackbox
+      rules:
+        - alert: RoboshopServiceDown
+          expr: probe_success == 0
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Service {{ $labels.instance }} is DOWN"
+            description: "Blackbox probe failed for {{ $labels.instance }} - check the service immediately"
+
+        - alert: RoboshopSlowResponse
+          expr: probe_duration_seconds > 2
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Service {{ $labels.instance }} is slow"
+            description: "Probe duration is {{ $value }}s for {{ $labels.instance }}"
+
+        - alert: RoboshopSSLExpiringSoon
+          expr: probe_ssl_earliest_cert_expiry - time() < 86400 * 30
+          for: 1m
+          labels:
+            severity: warning
+          annotations:
+            summary: "SSL certificate expiring soon for {{ $labels.instance }}"
+            description: "SSL cert expires in less than 30 days for {{ $labels.instance }}"
+
+        - alert: RoboshopHTTPNotOK
+          expr: probe_http_status_code != 200
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "HTTP status not 200 for {{ $labels.instance }}"
+            description: "Got HTTP status {{ $value }} for {{ $labels.instance }}"
+EOF
