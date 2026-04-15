@@ -1,4 +1,3 @@
-cat > monitor.yaml <<'EOF'
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
@@ -69,4 +68,3 @@ spec:
           annotations:
             summary: "HTTP status not 200 for {{ $labels.instance }}"
             description: "Got HTTP status {{ $value }} for {{ $labels.instance }}"
-EOF
