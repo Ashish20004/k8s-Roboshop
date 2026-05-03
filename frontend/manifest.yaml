@@ -152,6 +152,7 @@ spec:
     tier: frontend
     component: frontend
   ports:
-  - protocol: TCP
-    port: 80 # servie port
+  - name: http
+    protocol: TCP
+    port: 80 # service port
     targetPort: 80 # container port
