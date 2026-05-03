@@ -16,5 +16,5 @@ spec:
       - roboshop
   endpoints:
   - port: http
-    path: /
+    path: /health
     interval: 15s
