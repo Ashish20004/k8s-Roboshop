@@ -8,9 +8,9 @@ metadata:
 spec:
   selector:
     matchLabels:
-      project: roboshop
-      tier: backend
-      component: catalogue
+        project: roboshop
+        tier: backend
+        component: catalogue
   namespaceSelector:
     matchNames:
       - roboshop
