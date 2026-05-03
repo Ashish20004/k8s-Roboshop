@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: catalogue-monitor
+  namespace: monitoring
+  labels:
+    release: monitoring
+spec:
+  selector:
+    matchLabels:
+      project: roboshop
+      tier: backend
+      component: catalogue
+  namespaceSelector:
+    matchNames:
+      - roboshop
+  endpoints:
+  - port: http
+    path: /metrics
+    interval: 15s
