@@ -106,6 +106,10 @@ spec:
       - name: frontend
         image: devzonefun/frontend:2.0.0
         imagePullPolicy: Always # safe to pull everytime, there may be images with same version rebuilt and pushed
+      - name: nginx-exporter    # ADD THIS SIDECAR
+        image: nginx/nginx-prometheus-exporter:1.1.0
+        args:
+          - -nginx.scrape-uri=http://localhost/stub_status
         resources:
           requests:
             cpu: "100m"
@@ -156,3 +160,6 @@ spec:
     protocol: TCP
     port: 80 # service port
     targetPort: 80 # container port
+  - name: metrics       # ADD THIS
+    port: 9113
+    targetPort: 9113

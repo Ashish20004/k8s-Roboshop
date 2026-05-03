@@ -15,6 +15,6 @@ spec:
     matchNames:
       - roboshop
   endpoints:
-  - port: http
-    path: /health
+  - port: metrics         # was: http
+    path: /metrics        # was: /health
     interval: 15s
