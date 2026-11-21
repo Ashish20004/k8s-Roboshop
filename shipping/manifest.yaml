@@ -4,91 +4,96 @@ metadata:
   name: shipping
   namespace: roboshop
   labels:
-    project: roboshop
-    tier: backend
-    component: shipping
+     project: Roboshop
+     tier: backend
+     component: shipping
+     environment: dev
 data:
   CART_ENDPOINT: "cart:8080"
   DB_HOST: "mysql"
+
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: shipping
-  namespace: roboshop
-  # these labels are replicaset labels
-  labels:
-    project: roboshop
-    tier: backend
-    component: shipping
-spec:
-  replicas: 1
-  selector:
-    # using these labels replica set selects the pod
-    matchLabels:
-      project: roboshop
-      tier: backend
-      component: shipping
-  # This is pod definition, pod is subset of replicaset
-  template:
-    metadata:
-      labels:
-        project: roboshop
+   name: shipping
+   namespace: roboshop
+   labels:
+     project: Roboshop
+     tier: backend
+     component: shipping
+     environment: dev
+spec: 
+   replicas: 1
+   selector:
+     matchLabels:
+       project: Roboshop
+       tier: backend
+       component: shipping
+       environment: dev
+   template:
+     metadata:
+       labels:
+        project: Roboshop
         tier: backend
         component: shipping
-    spec:
-      containers:
-      - name: shipping
-        image: devzonefun/shipping:2.1.0
-        imagePullPolicy: Always # safe to pull everytime, there may be images with same version rebuilt and pushed
-        resources:
-          requests:
-            cpu: "200m"
-            memory: "256Mi"
-          limits:
-            cpu: "200m"
-            memory: "256Mi"
-        readinessProbe:
-          # httpGet:
-          #   path: /health
-          #   port: 8080
-          tcpSocket:
-            port: 8080
-          failureThreshold: 2
-          periodSeconds: 10
-          initialDelaySeconds: 15
-        startupProbe:
-          httpGet:
-            path: /health
-            port: 8080
-          failureThreshold: 20
-          periodSeconds: 10
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 8080
-          failureThreshold: 2
-          periodSeconds: 10
-        envFrom:
-        - configMapRef:
-            name: shipping
+        environment: dev
+     spec:
+        containers:
+        - name:  shipping
+          image: devzonefun/shipping:2.0.0
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "120m"
+              memory: "128Mi"
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: liveness-port
+            failureThreshold: 30
+            periodSeconds: 10
+          readinessProbe:
+            # httpGet:
+            # path: /health
+            # port: 8080
+            tcpSocket:
+             port: 8080
+            failureThreshold: 2
+            periodSeconds: 10
+            initialDelaySeconds: 15
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            failureThreshold: 2
+            periodSeconds: 10
+            initialDelaySeconds: 15
+          envFrom:
+          - configMapRef:
+              name: shipping
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: shipping
+  name:  shipping
   namespace: roboshop
   labels:
-    project: roboshop
+    project: Roboshop
     tier: backend
-    component: shipping
+    component:  shipping
+    environment: dev
 spec:
   selector:
-    # labels are used as selectors
-    project: roboshop
+    project: Roboshop
     tier: backend
-    component: shipping
+    component:  shipping
+    environment: dev
   ports:
-  - protocol: TCP
-    port: 8080 # servie port
-    targetPort: 8080 # container port
+  - name: shipping
+    protocol: TCP
+    port: 8080
+    targetPort: 8080
