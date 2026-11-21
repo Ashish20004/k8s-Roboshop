@@ -31,6 +31,13 @@ spec:
       tier: database
       component: cart
       environment: dev 
+  template:
+    metadata:
+      labels:
+        project: Roboshop
+        tier: database
+        component: cart
+        environment: dev 
   spec:
     contianer:
     - name: cart
