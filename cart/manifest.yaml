@@ -5,7 +5,7 @@ metadata:
   namespace: roboshop
   labels:
     project: Roboshop
-    tier: database
+    tier: backend
     component: cart
     environment: dev 
 data:
@@ -28,44 +28,44 @@ spec:
   selector: 
     matchLabels:
       project: Roboshop
-      tier: database
+      tier: backend
       component: cart
       environment: dev 
   template:
     metadata:
       labels:
         project: Roboshop
-        tier: database
+        tier: backend
         component: cart
         environment: dev 
-  spec:
-    containers:
-    - name: cart
-      image: devzonefun/cart:2.0.0
-      imagePullPolicy: Always
-      resources:
-        requests:
-          cpu: "100m"
-          memory: "128Mi"
-        limits:
-          cpu: "150m"
-          memory: "128Mi"
-      readinessProbe:
-        tcpSocket:
-          port: 8080
-        failureThreshold: 2
-        periodSeconds: 10
-        initialDelaySeconds: 15
-      livenessProbe:
-        httpGet:
-          path: /health
-          port: 8080
-        failureThreshold: 2
-        periodSeconds: 10
-        initialDelaySeconds: 15
-      envFrom:
-      - configMapRef:
-          name: cart
+    spec:
+      containers:
+      - name: cart
+        image: devzonefun/cart:2.0.0
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "150m"
+            memory: "128Mi"
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+          failureThreshold: 2
+          periodSeconds: 10
+          initialDelaySeconds: 15
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          failureThreshold: 2
+          periodSeconds: 10
+          initialDelaySeconds: 15
+        envFrom:
+         - configMapRef:
+             name: cart
 ---
 apiVersion: v1
 kind: Service
@@ -74,13 +74,13 @@ metadata:
   namespace: roboshop
   labels:
     project: Roboshop
-    tier: database
+    tier: backend
     component: cart
     environment: dev 
 spec:
   selector:
     project: Roboshop
-    tier: database
+    tier: backend
     component: cart
     environment: dev 
   ports:
