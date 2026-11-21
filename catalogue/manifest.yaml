@@ -7,7 +7,7 @@ metadata:
      project: Roboshop
      tier: backend
      component: catalogue
-     environemnt: dev
+     environment: dev
 data:
   MONGO: true
   MONGO_URL: "mongodb://mongodb:27017/catalogue"
@@ -21,7 +21,7 @@ metadata:
      project: Roboshop
      tier: backend
      component: catalogue
-     environemnt: dev
+     environment: dev
 spec: 
    replicas: 1
    selector:
@@ -29,14 +29,14 @@ spec:
        project: Roboshop
        tier: backend
        component: catalogue
-       environemnt: dev
+       environment: dev
    template:
      metadata:
        labels:
         project: Roboshop
         tier: backend
         component: catalogue
-        environemnt: dev
+        environment: dev
      spec:
         containers:
         - name: catalogue
@@ -77,13 +77,13 @@ metadata:
     project: Roboshop
     tier: backend
     component: catalogue
-    environemnt: dev
+    environment: dev
 spec:
   selector:
     project: Roboshop
     tier: backend
     component: catalogue
-    environemnt: dev
+    environment: dev
   ports:
   - name: catalogue
     protocol: TCP
