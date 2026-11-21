@@ -1,29 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-   name: monogdb
+   name: mongodb
    namespace: roboshop
 
    labels:
-   project: Roboshop
-   tier: database
-   component: mongodb
-   environemnt: dev
+     project: Roboshop
+     tier: database
+     component: mongodb
+     environment: dev
 spec:
-   replicas: 2
+   replicas: 1
    selector:
       matchLabels:
         project: Roboshop
         tier: database
         component: mongodb
-        environemnt: dev
+        environment: dev
    template:
       metadata:
         labels:
-        project: Roboshop
-        tier: database
-        component: mongodb
-        environemnt: dev
+          project: Roboshop
+          tier: database
+          component: mongodb
+          environment: dev
       spec:
         containers:
         - name: mongodb
@@ -38,13 +38,13 @@ metadata:
     project: Roboshop
     tier: database
     component: mongodb
-    environemnt: dev 
+    environment: dev 
 spec:
   selector:
     project: Roboshop
     tier: database
     component: mongodb
-    environemnt: dev
+    environment: dev
   ports:
   - name: mongodb
     protocol: TCP
