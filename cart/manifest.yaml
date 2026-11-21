@@ -39,7 +39,7 @@ spec:
         component: cart
         environment: dev 
   spec:
-    contianer:
+    container:
     - name: cart
       image: devzonefun/cart:2.0.0
       imagePullPolicy: Always
