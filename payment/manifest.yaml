@@ -1,12 +1,13 @@
 apiVersion: v1
 kind: ConfigMap
-metadata: 
-  name: payment-config
+metadata:
+  name: payment
   namespace: roboshop
   labels:
-    project: roboshop
-    tier: backend
-    component: payment
+     project: Roboshop
+     tier: backend
+     component: payment
+     environment: dev
 data:
   CART_HOST: "cart"
   CART_PORT: "8080"
@@ -15,75 +16,82 @@ data:
   AMQP_HOST: "rabbitmq"
   AMQP_USER: "roboshop"
   AMQP_PASS: "roboshop123"
-
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: payment
-  namespace: roboshop
-  labels:
-    project: roboshop
-    tier: backend
-    component: payment
-spec:
-  replicas: 1
-  selector: 
-    matchLabels:
-      project: roboshop
-      tier: backend
-      component: payment
-  template:
-    metadata:
-      labels:
-        project: roboshop
+   name: payment
+   namespace: roboshop
+   labels:
+     project: Roboshop
+     tier: backend
+     component: payment
+     environment: dev
+spec: 
+   replicas: 1
+   selector:
+     matchLabels:
+       project: Roboshop
+       tier: backend
+       component: payment
+       environment: dev
+   template:
+     metadata:
+       labels:
+        project: Roboshop
         tier: backend
         component: payment
-    spec:
-      containers:
-        - name: payment
+        environment: dev
+     spec:
+        containers:
+        - name:  payment
           image: devzonefun/payment:2.0.0
           imagePullPolicy: Always
           resources:
             requests:
-              memory: "128Mi"
-              cpu: "100m"
+              cpu: "150m"
+              memory: "256Mi"
             limits:
-              memory: "128Mi"
-              cpu: "100m"
+              cpu: "150"
+              memory: "256Mi"
           readinessProbe:
+            # httpGet:
+            # path: /health
+            # port: 8080
             tcpSocket:
-              port: 8080    
+             port: 8080
             failureThreshold: 2
-            initialDelaySeconds: 15
             periodSeconds: 10
+            initialDelaySeconds: 15
           livenessProbe:
             httpGet:
               path: /health
               port: 8080
             failureThreshold: 2
             periodSeconds: 10
+            initialDelaySeconds: 15
           envFrom:
-            - configMapRef:
-                name: payment-config
+          - configMapRef:
+              name: payment
 ---
 apiVersion: v1
 kind: Service
 metadata:
-
   name: payment
   namespace: roboshop
   labels:
-    project: roboshop
+    project: Roboshop
     tier: backend
-    component: payment
+    component:  payment
+    environment: dev
 spec:
   selector:
-    project: roboshop
+    project: Roboshop
     tier: backend
-    component: payment
+    component:  payment
+    environment: dev
   ports:
-    - protocol: TCP
-      port: 8080
-      targetPort: 8080  
-              
+  - name: payment
+    protocol: TCP
+    port: 8080
+    targetPort: 8080
