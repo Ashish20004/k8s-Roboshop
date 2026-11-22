@@ -12,7 +12,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      project: roboshop
+      project: Roboshop
       tier: database
       component: rabbitmq
       environment: dev
@@ -41,7 +41,7 @@ metadata:
     environment: dev
 spec:
   selector:
-    project: roboshop
+    project: Roboshop
     tier: database
     component: rabbitmq
     environment: dev
