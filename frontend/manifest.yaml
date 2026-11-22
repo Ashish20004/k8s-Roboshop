@@ -93,11 +93,11 @@ spec:
       environemnt: dev
   template:
     metadata:
-        labels:
-          project: Roboshop
-          tier: frontend
-          component: frontend
-          environment: dev
+      labels:
+        project: Roboshop
+        tier: frontend
+        component: frontend
+        environment: dev
     spec:
       containers:
       - name: frontend
