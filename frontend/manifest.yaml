@@ -149,8 +149,8 @@ spec:
   type: LoadBalancer
   selector:
     project: Roboshop
-    tier: database
-    component: mongodb
+    tier: frontend
+    component: frontend
     environment: dev
   ports:
   - name: frontend
