@@ -76,10 +76,10 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: forntend
+  name: frontend
   namespace: roboshop
   labels:
-    project: roboshop
+    project: Roboshop
     tier: frontend
     component: frontend
     environemnt: dev
@@ -87,7 +87,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      project: roboshop
+      project: Roboshop
       tier: frontend
       component: frontend
       environemnt: dev
