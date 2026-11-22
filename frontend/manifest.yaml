@@ -82,7 +82,7 @@ metadata:
     project: Roboshop
     tier: frontend
     component: frontend
-    environemnt: dev
+    environment: dev
 spec:
   replicas: 1
   selector:
@@ -90,7 +90,7 @@ spec:
       project: Roboshop
       tier: frontend
       component: frontend
-      environemnt: dev
+      environment: dev
   template:
     metadata:
       labels:
