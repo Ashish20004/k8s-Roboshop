@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-headless-service
+  namespace: roboshop
+  labels:
+    project: Roboshop
+    tier: database
+    component: redis
+    environment: dev 
+spec:
+  clusterIp: None
+  selector:
+    project: Roboshop
+    tier: database
+    component: redis
+    environment: dev 
+  ports:
+  - name: redis
+    protocol: TCP
+    port: 6379
+    targetPort: 6379
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: roboshop
+  labels:
+    project: Roboshop
+    tier: database
+    component: redis
+    environment: dev 
+spec:
+  selector:
+    project: Roboshop
+    tier: database
+    component: redis
+    environment: dev 
+  ports:
+  - name: redis
+    protocol: TCP
+    port: 6379
+    targetPort: 6379
+  

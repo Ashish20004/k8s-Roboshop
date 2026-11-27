@@ -28,15 +28,15 @@ spec:
       containers:
       - name: redis
         image: redis:7.0
-      volumeMounts:
-      - name: redis
-        mountPath: /data
+        volumeMounts:
+        - name: redis
+          mountPath: /data
   volumeClaimTemplates:
   - metadata:
       name: redis
     spec:
       accessModes: ["ReadWriteOnce"]
-      storageClass: roboshop-ebs
+      storageClassName: roboshop-ebs
       resources:
         requests:
           storage: 1gi
