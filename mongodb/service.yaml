@@ -8,13 +8,13 @@ metadata:
     tier: database
     component: mongodb
     environment: dev 
-  spec:
-    clusterIp: None
-    selector:
-      project: Roboshop
-      tier: database
-      component: mongodb
-      environment: dev
+spec:
+  clusterIp: None
+  selector:
+    project: Roboshop
+    tier: database
+    component: mongodb
+    environment: dev
   ports:
   - name: mongodb
     protocol: TCP
