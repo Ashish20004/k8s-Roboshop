@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata: 
   name: redis
   namespace: roboshop
@@ -9,6 +9,7 @@ metadata:
     component: redis
     environment: dev 
 spec:
+  serviceName: redis-headless-service
   replicas: 1
   selector:
      matchLabels:
@@ -27,26 +28,16 @@ spec:
       containers:
       - name: redis
         image: redis:7.0
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: redis
-  namespace: roboshop
-  labels:
-    project: Roboshop
-    tier: database
-    component: redis
-    environment: dev 
-spec:
-  selector:
-    project: Roboshop
-    tier: database
-    component: redis
-    environment: dev 
-  ports:
-  - name: redis
-    protocol: TCP
-    port: 6379
-    targetPort: 6379
-  
+      volumeMounts:
+      - name: redis
+        mountPath: /data
+  volumeClaimTemplates:
+  - metadata:
+      name: redis
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClass: roboshop-ebs
+      resources:
+        requests:
+          storage: 1gi
+
