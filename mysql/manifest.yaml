@@ -1,15 +1,15 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
    name: mysql
    namespace: roboshop
-
    labels:
      project: Roboshop
      tier: database
      component: mysql
      environment: dev
 spec:
+   serviceName: mysql-headless-service
    replicas: 1
    selector:
       matchLabels:
@@ -28,27 +28,16 @@ spec:
         containers:
         - name: mysql
           image: devzonefun/mysql:2.0.0
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mysql
-  namespace: roboshop
-  labels:
-    project: Roboshop
-    tier: database
-    component: mysql
-    environment: dev 
-spec:
-  selector:
-    project: Roboshop
-    tier: database
-    component: mysql
-    environment: dev
-  ports:
-  - name: mysql
-    protocol: TCP
-    port: 3306  #service port
-    targetPort: 3306 #container Port
-
-      
+          volumeMounts:
+          - name: mysql
+          mountPath: /var/lib/mysql
+   volumeClaimTemplates:
+   - metadata:
+      name: mysql
+     spec:
+       accessModes: ["ReadWriteOnce"]
+       storageClassName: roboshop-ebs
+       resources:
+         requests:
+           storage: 1Gi
+  
