@@ -39,5 +39,5 @@ spec:
       storageClassName: roboshop-ebs
       resources:
         requests:
-          storage: 1gi
+          storage: 1Gi
 
