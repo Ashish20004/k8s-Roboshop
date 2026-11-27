@@ -9,7 +9,7 @@ metadata:
     component: redis
     environment: dev 
 spec:
-  clusterIp: None
+  clusterIP: None
   selector:
     project: Roboshop
     tier: database
