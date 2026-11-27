@@ -10,7 +10,7 @@ metadata:
      environment: dev
 spec:
    serviceName: mongodb-headless-service
-   replicas: 
+   replicas: 1
    selector:
       matchLabels:
         project: Roboshop
@@ -28,15 +28,15 @@ spec:
         containers:
         - name: mongodb
           image: devzonefun/mongodb:2.0.0
-        volumeMounts:
-        - name: mongodb
-          mountPath: /data/db
+          volumeMounts:
+          - name: mongodb
+            mountPath: /data/db
    volumeClaimTemplates:
    - metadata:
        name: mongodb
      spec:
        accessModes: ["ReadWriteOnce"]
-       storageClass: roboshop-ebs
+       storageClassName: roboshop-ebs
        resources:
          requests:
            storage: 1Gi
